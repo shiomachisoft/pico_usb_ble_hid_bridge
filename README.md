@@ -46,8 +46,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 ## 4. Source Code and Binaries
 
-The full source code for this program and the ready-to-flash binary (.uf2 file) are available in the following GitHub repository:
-[shiomachisoft/pico_usb_ble_hid_bridge](https://github.com/shiomachisoft/pico_usb_ble_hid_bridge)
+The full source code for this program and the ready-to-flash binary (.uf2 file) are available in this repository:
 
 > [!NOTE]
 > The source code is written in C using the Pico SDK.
