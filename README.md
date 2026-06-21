@@ -100,7 +100,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
 > **Note:**  
 > The iPad could not pair with the keyboard mentioned above.  
-> The gamepad has currently only been tested on Windows 11.
+> The gamepad has currently only been tested on Windows11 PC.
 
 ## 7. License
 
