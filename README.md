@@ -13,7 +13,10 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
 
 - **Special Notes**
   - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
-    - Note: Because the standard USB connector on the Pico 2 W operates as a USB host, it can no longer be used for USB communication with a PC, etc.
+
+> [!NOTE]
+> Note: Because the standard USB connector on the Pico 2 W operates as a USB host, it can no longer be used for USB communication with a PC, etc.
+  
   - **Communication with USB devices is handled via a software-implemented USB port, using PIO (Programmable I/O) to control GP0 and GP1.**
 
 ### 2.2. Connection between Pico 2 W and USB Connector Board (Type-A Female)
@@ -59,11 +62,16 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
 1. Connect each device as shown in the System Configuration diagram.
 2. With the Pico 2 W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
-   - *Note: If using a gamepad, please set it to "DirectInput" mode beforehand.*
-3. Supply power to the Pico 2 W's USB connector to turn it ON.
+
+  > [!NOTE]
+  > If using a gamepad, please set it to "DirectInput" mode beforehand.*
+     
+4. Supply power to the Pico 2 W's USB connector to turn it ON.
    - *In the standby state before a BLE connection is established, the onboard LED on the Pico 2 W will **blink**.*
-4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
-   - *Note: For Windows 11, please select the item indicated by the red frame in the figure below.*
+5. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
+
+  > [!NOTE] 
+  > For Windows 11, please select the item indicated by the red frame in the figure below.*
 
  <img width="963" height="1108" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
 
