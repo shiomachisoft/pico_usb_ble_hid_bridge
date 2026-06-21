@@ -74,16 +74,16 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
 5. Once pairing is complete, the LED will change to **solidly lit**, and you can now use the USB device.
 
-> **Regarding Reconnection:**
-> - Once pairing is completed, it will automatically reconnect from the next time onwards.
-> - You do not need to perform the pairing operation on the BLE host (PC, tablet, smartphone) side again when reconnecting.
+   > **Regarding Reconnection:**
+   > - Once pairing is completed, it will automatically reconnect from the next time onwards.
+   > - You do not need to perform the pairing operation on the BLE host (PC, tablet, smartphone) side again when reconnecting.
 
-> **Steps to Change the Connected USB Device:**
-> If you want to change the connected USB device, please follow these steps:
-> 1. Turn OFF the Pico 2 W.
-> 2. Remove "USB BLE HID Brg" from the pairing information on your BLE host (PC, tablet, smartphone).
-> 3. Connect the new USB device to the USB connector (Type-A Female).
-> 4. Perform the steps in "5.2. Pairing" again.
+   > **Steps to Change the Connected USB Device:**
+   > If you want to change the connected USB device, please follow these steps:
+   > 1. Turn OFF the Pico 2 W.
+   > 2. Remove "USB BLE HID Brg" from the pairing information on your BLE host (PC, tablet, smartphone).
+   > 3. Connect the new USB device to the USB connector (Type-A Female).
+   > 4. Perform the steps in "5.2. Pairing" again.
 
 ## 6. Verified Devices and Environments
 
