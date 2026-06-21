@@ -12,11 +12,10 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
 <img width="819" height="456" alt="image" src="https://github.com/user-attachments/assets/aac5bf01-4c37-42ab-b7ae-c93f7b719c7e" />
 
 - **Special Notes**
-  - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**  
+  - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
+    > **Note:**  
+    > When the Pico 2 W is configured to act as a USB host, its standard USB connector cannot be used for USB communication with a PC or other devices.
   - **Communication with USB devices is handled via a software-implemented USB port, using PIO (Programmable I/O) to control GP0 and GP1.**
-
-> [!NOTE]
-> When the Pico 2 W is configured to act as a USB host, its standard USB connector cannot be used for USB communication with a PC or other devices.
 
 ### 2.2. Connection between Pico 2 W and USB Connector Board (Type-A Female)
 
@@ -47,7 +46,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 The full source code for this program and the ready-to-flash binary (.uf2 file) are available in this repository:
 
-> [!NOTE]
+> **Note:**  
 > The source code is written in C using the Pico SDK.
 
 ## 5. Usage
@@ -60,27 +59,25 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
 1. Connect each device as shown in the System Configuration diagram.
 2. With the Pico 2 W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
-
-   > [!NOTE]
+   
+   > **Note:**  
    > If using a gamepad, please set it to "DirectInput" mode beforehand.
      
 3. Supply power to the Pico 2 W's USB connector to turn it ON.
    - *In the standby state before a BLE connection is established, the onboard LED on the Pico 2 W will **blink**.*
 4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
-
-   > [!NOTE] 
+   
+   > **Note:**  
    > For Windows 11, please select the item indicated by the red frame in the figure below.
 
  <img width="492" height="566" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
 
 5. Once pairing is complete, the LED will change to **solidly lit**, and you can now use the USB device.
 
-> [!NOTE]
 > **Regarding Reconnection:**
 > - Once pairing is completed, it will automatically reconnect from the next time onwards.
 > - You do not need to perform the pairing operation on the BLE host (PC, tablet, smartphone) side again when reconnecting.
 
-> [!WARNING]
 > **Steps to Change the Connected USB Device:**
 > If you want to change the connected USB device, please follow these steps:
 > 1. Turn OFF the Pico 2 W.
@@ -99,7 +96,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 - Windows 11 PC
 - iPad 9th Gen (iPadOS 26.5) - Pixel 8a (Android 16)
 
-> [!WARNING]
+> **Note:**  
 > The gamepad has currently only been tested on Windows 11.
 
 ## 7. License
@@ -108,7 +105,8 @@ For details regarding the license of this software, please refer to the `LICENSE
 
 ## 8. Implementation Details
 
-*Note: This section will be added in the future.*
+> **Note:**   
+> This section will be added in the future.*
 
 ## 9. Disclaimer
 
