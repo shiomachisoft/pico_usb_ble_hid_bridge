@@ -29,7 +29,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 | **GND** | 38 | **GND** |
 | **VBUS** | 40 | **VBUS** |
 
-> **Note:** > The D+ and D- assignments depend on your firmware configuration (Pico-PIO-USB default is usually GP0=D-, GP1=D+). If the USB device is not recognized, try swapping GP0 and GP1.
+> **Note:** > The D+ and D- assignments depend on your firmware configuration (Pico-PIO-USB default is usually GP0=D+, GP1=D-). If the USB device is not recognized, try swapping GP0 and GP1.
 
 ## 3. Features and Limitations
 
