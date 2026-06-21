@@ -2,8 +2,8 @@
 
 ## 1. Overview
 
-This software is firmware for the Raspberry Pi Pico 2 W.
-It acts as a bridge (relay) that allows various types of USB HID devices (keyboards, mice, gamepads, etc.) to be used as BLE (Bluetooth Low Energy) devices from PCs, tablets, and smartphones.
+This software is firmware that allows the Raspberry Pi Pico 2 W to operate as a "USB to BLE bridge".
+By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico 2 W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, and other devices.
 
 ## 2. System Configuration
 
