@@ -99,6 +99,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 - Pixel 8a (Android 16)
 
 > **Note:**  
+> The iPad could not pair with the keyboard mentioned above.  
 > The gamepad has currently only been tested on Windows 11.
 
 ## 7. License
