@@ -71,7 +71,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
    > [!NOTE] 
    > For Windows 11, please select the item indicated by the red frame in the figure below.
 
- <img width="963" height="1108" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
+ <img width="770" height="886" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
 
 5. Once pairing is complete, the LED will change to **solidly lit**, and you can now use the USB device.
 
