@@ -2,8 +2,8 @@
 
 ## 1. Overview
 
-This software is firmware that allows the Raspberry Pi Pico 2 W to operate as a "USB to BLE bridge".
-By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico 2 W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, and other devices.
+This firmware allows the Raspberry Pi Pico 2 W to operate as a "USB to BLE bridge".
+By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico 2 W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, or other devices.
 
 ## 2. System Configuration
 
@@ -36,7 +36,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 ### 3.1. Features
 - Recognized as a standard BLE HID device by PCs, tablets, and smartphones.
-- In principle, there are no restrictions on the types of connectable USB HID devices; it supports various devices such as keyboards, mice, and gamepads.
+- Generally, there are no restrictions on the types of connectable USB HID devices; it supports various devices such as keyboards, mice, and gamepads.
     
 ### 3.2. Limitations
 - Please set your gamepad to "DirectInput" mode. "XInput" mode is not supported.
@@ -62,15 +62,15 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 1. Connect each device as shown in the System Configuration diagram.
 2. With the Pico 2 W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
 
-  > [!NOTE]
-  > If using a gamepad, please set it to "DirectInput" mode beforehand.*
+   > [!NOTE]
+   > If using a gamepad, please set it to "DirectInput" mode beforehand.
      
-4. Supply power to the Pico 2 W's USB connector to turn it ON.
+3. Supply power to the Pico 2 W's USB connector to turn it ON.
    - *In the standby state before a BLE connection is established, the onboard LED on the Pico 2 W will **blink**.*
-5. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
+4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
 
-  > [!NOTE] 
-  > For Windows 11, please select the item indicated by the red frame in the figure below.*
+   > [!NOTE] 
+   > For Windows 11, please select the item indicated by the red frame in the figure below.
 
  <img width="963" height="1108" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
 
@@ -98,8 +98,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
 ### 6.2. Verified BLE Hosts
 - Windows 11 PC
-- iPad 9th Gen (iPadOS 26.5)
-- Pixel 8a (Android 16)
+- iPad 9th Gen (iPadOS 26.5) - Pixel 8a (Android 16)
 
 > [!WARNING]
 > The gamepad has currently only been tested on Windows 11.
