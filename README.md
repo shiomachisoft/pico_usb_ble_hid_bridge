@@ -20,7 +20,7 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
 
 Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](https://akizukidenshi.com/catalog/g/g107429/) for the USB connector board (Type-A Female).
 
-<img width="1024" height="413" alt="image" src="https://github.com/user-attachments/assets/82c60a4f-c819-440b-82ac-7433f70a96cb" />
+<img width="1024" height="477" alt="image" src="https://github.com/user-attachments/assets/37b2661b-cd10-452d-9856-b4e2c9bc50d1" />
 
 ## 3. Features and Limitations
 
