@@ -9,7 +9,7 @@ It acts as a bridge (relay) that allows various types of USB HID devices (keyboa
 
 ### 2.1. Configuration Overview
 
-![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4236522/10fbde40-097c-47c7-910e-6dab1dd77bb2.png)
+<img width="819" height="456" alt="image" src="https://github.com/user-attachments/assets/aac5bf01-4c37-42ab-b7ae-c93f7b719c7e" />
 
 - **Special Notes**
   - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
@@ -20,7 +20,7 @@ It acts as a bridge (relay) that allows various types of USB HID devices (keyboa
 
 Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](https://akizukidenshi.com/catalog/g/g107429/) for the USB connector board (Type-A Female).
 
-![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4236522/e758b481-d82f-4c25-aae5-84544ecf5f25.png)
+<img width="1024" height="413" alt="image" src="https://github.com/user-attachments/assets/82c60a4f-c819-440b-82ac-7433f70a96cb" />
 
 ## 3. Features and Limitations
 
@@ -58,7 +58,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
    - *Note: For Windows 11, please select the item indicated by the red frame in the figure below.*
 
-   ![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4236522/3661e320-7a03-4af4-aeeb-aa2ae913b295.png)
+ <img width="963" height="1108" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
 
 5. Once pairing is complete, the LED will change to **solidly lit**, and you can now use the USB device.
 
