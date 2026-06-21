@@ -22,6 +22,13 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 <img width="1024" height="477" alt="image" src="https://github.com/user-attachments/assets/37b2661b-cd10-452d-9856-b4e2c9bc50d1" />
 
+| Pico 2 W Pin Name | Pin Number (Physical Pin) |
+| :--- | :--- |
+| **GP0** | 1 |
+| **GP1** | 2 |
+| **GND** | 38 |
+| **VBUS** | 40 |
+
 ## 3. Features and Limitations
 
 ### 3.1. Features
