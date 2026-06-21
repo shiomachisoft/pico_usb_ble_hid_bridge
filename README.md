@@ -39,9 +39,8 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 The full source code for this program and the ready-to-flash binary (.uf2 file) are available in the following GitHub repository:
 [shiomachisoft/pico_usb_ble_hid_bridge](https://github.com/shiomachisoft/pico_usb_ble_hid_bridge)
 
-:::note
-The source code is written in C using the Pico SDK.
-:::
+> [!NOTE]
+> The source code is written in C using the Pico SDK.
 
 ## 5. Usage
 
@@ -63,20 +62,18 @@ The source code is written in C using the Pico SDK.
 
 5. Once pairing is complete, the LED will change to **solidly lit**, and you can now use the USB device.
 
-:::note
-**Regarding Reconnection:**
-- Once pairing is completed, it will automatically reconnect from the next time onwards.
-- You do not need to perform the pairing operation on the BLE host (PC, tablet, smartphone) side again when reconnecting.
-:::
+> [!NOTE]
+> **Regarding Reconnection:**
+> - Once pairing is completed, it will automatically reconnect from the next time onwards.
+> - You do not need to perform the pairing operation on the BLE host (PC, tablet, smartphone) side again when reconnecting.
 
-:::note warn
-**Steps to Change the Connected USB Device:**
-If you want to change the connected USB device, please follow these steps:
-1. Turn OFF the Pico 2 W.
-2. Remove "USB BLE HID Brg" from the pairing information on your BLE host (PC, tablet, smartphone).
-3. Connect the new USB device to the USB connector (Type-A Female).
-4. Perform the steps in "5.2. Pairing" again.
-:::
+> [!WARNING]
+> **Steps to Change the Connected USB Device:**
+> If you want to change the connected USB device, please follow these steps:
+> 1. Turn OFF the Pico 2 W.
+> 2. Remove "USB BLE HID Brg" from the pairing information on your BLE host (PC, tablet, smartphone).
+> 3. Connect the new USB device to the USB connector (Type-A Female).
+> 4. Perform the steps in "5.2. Pairing" again.
 
 ## 6. Verified Devices and Environments
 
@@ -90,7 +87,8 @@ If you want to change the connected USB device, please follow these steps:
 - iPad 9th Gen (iPadOS 26.5)
 - Pixel 8a (Android 16)
 
-*Note: The gamepad has currently only been tested on Windows 11.*
+> [!WARNING]
+> The gamepad has currently only been tested on Windows 11.
 
 ## 7. License
 
