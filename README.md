@@ -15,7 +15,7 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
   - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
 
 > [!NOTE]
-> Note: Because the standard USB connector on the Pico 2 W operates as a USB host, it can no longer be used for USB communication with a PC, etc.
+> Note: When the Pico 2 W is configured to act as a USB host, its standard USB connector cannot be used for USB communication with a PC or other devices.
   
   - **Communication with USB devices is handled via a software-implemented USB port, using PIO (Programmable I/O) to control GP0 and GP1.**
 
