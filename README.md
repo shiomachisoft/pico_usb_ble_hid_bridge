@@ -106,4 +106,5 @@ For details regarding the license of this software, please refer to the `LICENSE
 
 ## 8. Implementation Details
 
-> **Note:** > This section will be added in the future.
+> **Note:**  
+> This section will be added in the future.
