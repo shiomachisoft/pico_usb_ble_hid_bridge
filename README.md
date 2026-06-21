@@ -108,3 +108,8 @@ For details regarding the license of this software, please refer to the `LICENSE
 
 > **Note:**  
 > This section will be added in the future.
+
+## 9. Disclaimer
+The author assumes no responsibility for any damages or issues arising from the content of this article or the use of this software. Please use it at your own risk.
+
+
