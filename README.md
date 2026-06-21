@@ -24,8 +24,8 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 | Pico 2 W Pin Name | Pin Number (Physical Pin) | USB Board Pin (Example) |
 | :--- | :--- | :--- |
-| **GP0** | 1 | **D-** |
-| **GP1** | 2 | **D+** |
+| **GP0** | 1 | **D+** |
+| **GP1** | 2 | **D-** |
 | **GND** | 38 | **GND** |
 | **VBUS** | 40 | **VBUS** |
 
