@@ -13,7 +13,8 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
 
 - **Special Notes**
   - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
-    > **Note:** > When the Pico 2 W is configured to act as a USB host, its standard USB connector cannot be used for USB communication with a PC or other devices.
+    > **Note:**  
+    > When the Pico 2 W is configured to act as a USB host, its standard USB connector cannot be used for USB communication with a PC or other devices.
   - **Communication with USB devices is handled via a software-implemented USB port, using PIO (Programmable I/O) to control GP0 and GP1.**
 
 ### 2.2. Connection between Pico 2 W and USB Connector Board (Type-A Female)
@@ -45,7 +46,8 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 The full source code for this program and the ready-to-flash binary (.uf2 file) are available in this repository:
 
-> **Note:** > The source code is written in C using the Pico SDK.
+> **Note:**  
+> The source code is written in C using the Pico SDK.
 
 ## 5. Usage
 
@@ -58,13 +60,15 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 1. Connect each device as shown in the System Configuration diagram.
 2. With the Pico 2 W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
    
-   > **Note:** > If using a gamepad, please set it to "DirectInput" mode beforehand.
+   > **Note:**  
+   > If using a gamepad, please set it to "DirectInput" mode beforehand.
      
 3. Supply power to the Pico 2 W's USB connector to turn it ON.
    - *In the standby state before a BLE connection is established, the onboard LED on the Pico 2 W will **blink**.*
 4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
    
-   > **Note:** > For Windows 11, please select the item indicated by the red frame in the figure below.
+   > **Note:**  
+   > For Windows 11, please select the item indicated by the red frame in the figure below.
 
  <img width="492" height="566" alt="image" src="https://github.com/user-attachments/assets/396cd811-862d-4726-93bd-74e3d0864090" />
 
@@ -91,7 +95,8 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 - iPad 9th Gen (iPadOS 26.5)
 - Pixel 8a (Android 16)
 
-> **Note:** > The gamepad has currently only been tested on Windows 11.
+> **Note:**  
+> The gamepad has currently only been tested on Windows 11.
 
 ## 7. License
 
