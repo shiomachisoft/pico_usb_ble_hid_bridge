@@ -1,0 +1,105 @@
+# Pico - USB to BLE HID Bridge
+
+## 1. Overview
+
+This software is firmware for the Raspberry Pi Pico 2 W.
+It acts as a bridge (relay) that allows various types of USB HID devices (keyboards, mice, gamepads, etc.) to be used as BLE (Bluetooth Low Energy) devices from PCs, tablets, and smartphones.
+
+## 2. System Configuration
+
+### 2.1. Configuration Overview
+
+![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4236522/10fbde40-097c-47c7-910e-6dab1dd77bb2.png)
+
+- **Special Notes**
+  - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
+    - Note: Because the standard USB connector on the Pico 2 W operates as a USB host, it can no longer be used for USB communication with a PC, etc.
+  - **Communication with USB devices is handled via a software-implemented USB port, using PIO (Programmable I/O) to control GP0 and GP1.**
+
+### 2.2. Connection between Pico 2 W and USB Connector Board (Type-A Female)
+
+Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](https://akizukidenshi.com/catalog/g/g107429/) for the USB connector board (Type-A Female).
+
+![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4236522/e758b481-d82f-4c25-aae5-84544ecf5f25.png)
+
+## 3. Features and Limitations
+
+### 3.1. Features
+- Recognized as a standard BLE HID device by PCs, tablets, and smartphones.
+- In principle, there are no restrictions on the types of connectable USB HID devices; it supports various devices such as keyboards, mice, and gamepads.
+    
+### 3.2. Limitations
+- Please set your gamepad to "DirectInput" mode. "XInput" mode is not supported.
+- For composite USB devices (e.g., a single USB device that functions as both a keyboard and a mouse), only some functions may work.
+- Hot-plugging of USB devices (connecting or disconnecting while powered on) is not supported.
+- Do not connect a USB hub between the Pico 2 W and the USB device.
+
+## 4. Source Code and Binaries
+
+The full source code for this program and the ready-to-flash binary (.uf2 file) are available in the following GitHub repository:
+[shiomachisoft/pico_usb_ble_hid_bridge](https://github.com/shiomachisoft/pico_usb_ble_hid_bridge)
+
+:::note
+The source code is written in C using the Pico SDK.
+:::
+
+## 5. Usage
+
+### 5.1. Flashing the Firmware
+1. Connect the Pico 2 W to your PC via USB while holding down the BOOTSEL button (the white button) so it is recognized as an RP2350 drive.
+2. Drag and drop the firmware (`pico_usb_ble_hid_bridge.uf2`) into the drive.
+
+### 5.2. Pairing
+
+1. Connect each device as shown in the System Configuration diagram.
+2. With the Pico 2 W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
+   - *Note: If using a gamepad, please set it to "DirectInput" mode beforehand.*
+3. Supply power to the Pico 2 W's USB connector to turn it ON.
+   - *In the standby state before a BLE connection is established, the onboard LED on the Pico 2 W will **blink**.*
+4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
+   - *Note: For Windows 11, please select the item indicated by the red frame in the figure below.*
+
+   ![image.png](https://qiita-image-store.s3.ap-northeast-1.amazonaws.com/0/4236522/3661e320-7a03-4af4-aeeb-aa2ae913b295.png)
+
+5. Once pairing is complete, the LED will change to **solidly lit**, and you can now use the USB device.
+
+:::note
+**Regarding Reconnection:**
+- Once pairing is completed, it will automatically reconnect from the next time onwards.
+- You do not need to perform the pairing operation on the BLE host (PC, tablet, smartphone) side again when reconnecting.
+:::
+
+:::note warn
+**Steps to Change the Connected USB Device:**
+If you want to change the connected USB device, please follow these steps:
+1. Turn OFF the Pico 2 W.
+2. Remove "USB BLE HID Brg" from the pairing information on your BLE host (PC, tablet, smartphone).
+3. Connect the new USB device to the USB connector (Type-A Female).
+4. Perform the steps in "5.2. Pairing" again.
+:::
+
+## 6. Verified Devices and Environments
+
+### 6.1. Verified USB Devices
+- Mouse: ELECOM M-HC01UR
+- Keyboard: ELECOM TK-FDM109T
+- Gamepad: ELECOM GP20s
+
+### 6.2. Verified BLE Hosts
+- Windows 11 PC
+- iPad 9th Gen (iPadOS 26.5)
+- Pixel 8a (Android 16)
+
+*Note: The gamepad has currently only been tested on Windows 11.*
+
+## 7. License
+
+For details regarding the license of this software, please refer to the `LICENSE` file in the repository.
+
+## 8. Implementation Details
+
+*Note: This section will be added in the future.*
+
+## 9. Disclaimer
+
+The author assumes no responsibility for any damage or trouble arising from the content of this document or the use of this software. Please use it at your own risk.
