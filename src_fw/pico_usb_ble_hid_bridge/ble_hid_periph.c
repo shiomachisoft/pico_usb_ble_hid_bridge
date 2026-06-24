@@ -912,20 +912,30 @@ static void sm_packet_handler(uint8_t packet_type, uint16_t channel,
         break;
 
     case SM_EVENT_PAIRING_COMPLETE:
-        switch (sm_event_pairing_complete_get_status(packet)) {
-        case ERROR_CODE_SUCCESS:
-            DbgPrint("Pairing complete, success\n");
-            break;
-        case ERROR_CODE_CONNECTION_TIMEOUT:
-            DbgPrint("Pairing failed, timeout\n");
-            break;
-        case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
-            DbgPrint("Pairing failed, disconnected\n");
-            break;
-        default:
-            DbgPrint("Pairing failed, reason 0x%02x\n",
-                     sm_event_pairing_complete_get_status(packet));
-            break;
+        {
+            uint8_t status = sm_event_pairing_complete_get_status(packet);
+            switch (status) {
+            case ERROR_CODE_SUCCESS:
+                DbgPrint("Pairing complete, success\n");
+                break;
+            case ERROR_CODE_CONNECTION_TIMEOUT:
+                DbgPrint("Pairing failed, timeout\n");
+                break;
+            case ERROR_CODE_REMOTE_USER_TERMINATED_CONNECTION:
+                DbgPrint("Pairing failed, disconnected\n");
+                break;
+            default:
+                DbgPrint("Pairing failed, reason 0x%02x\n", status);
+                break;
+            }
+            if (status != ERROR_CODE_SUCCESS) {
+                bd_addr_t addr;
+                sm_event_pairing_complete_get_address(packet, addr);
+                uint8_t addr_type = sm_event_pairing_complete_get_addr_type(packet);
+                gap_delete_bonding(addr_type, addr);
+                DbgPrint("Deleted bonding for %s (type %d) due to pairing failure\n",
+                         bd_addr_to_str(addr), addr_type);
+            }
         }
         break;
 

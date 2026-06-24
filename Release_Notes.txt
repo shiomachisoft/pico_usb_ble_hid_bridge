@@ -1,0 +1,2 @@
+- 2026/06/24
+Fixed an issue where it sometimes failed to pair with an iPad.
