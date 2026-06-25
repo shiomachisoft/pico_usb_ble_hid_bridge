@@ -35,7 +35,6 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 - Generally, there are no restrictions on the types of connectable USB HID devices; it supports various devices such as keyboards, mice, and gamepads.
     
 ### 3.2. Limitations
-- Depending on the combination of the BLE host (e.g., PC, tablet, smartphone) and the USB device (e.g., keyboard, mouse, gamepad), pairing may not be possible.
 - Please set your gamepad to "DirectInput" mode. "XInput" mode is not supported.
 - For composite USB devices (e.g., a single USB device that functions as both a keyboard and a mouse), only some functions may work.
 - Hot-plugging of USB devices (connecting or disconnecting while powered on) is not supported.
