@@ -1,2 +1,5 @@
-- 2026/06/24
+- 20260624_2
 Fixed an issue where it sometimes failed to pair with an iPad.
+
+- 20260621
+First release
