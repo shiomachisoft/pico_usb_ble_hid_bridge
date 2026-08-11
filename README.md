@@ -29,6 +29,8 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 | **GND** | 38 | **GND** |
 | **VBUS** | 40 | **VBUS** |
 
+Connect 27Ω resistors between GP0/GP1 of the Pico W and D+/D- of the USB connector, respectively. 
+
 ## 3. Features and Limitations
 
 ### 3.1. Features
