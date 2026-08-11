@@ -22,14 +22,14 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 <img width="1024" height="477" alt="image" src="https://github.com/user-attachments/assets/d6162ca1-4a36-4a6a-9232-454f3f1f9e93" />
 
+***Connect 27Ω resistors between GP0/GP1 of the Pico W and D+/D- of the USB connector, respectively.**
+
 | Pico W Pin Name | Pin Number (Physical Pin) | USB Connector Board Pin |
 | :--- | :--- | :--- |
 | **GP0** | 1 | **D+** |
 | **GP1** | 2 | **D-** |
 | **GND** | 38 | **GND** |
 | **VBUS** | 40 | **VBUS** |
-
-Connect 27Ω resistors between GP0/GP1 of the Pico W and D+/D- of the USB connector, respectively. 
 
 ## 3. Features and Limitations
 
