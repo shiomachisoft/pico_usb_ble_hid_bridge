@@ -1,4 +1,4 @@
-# Pico W - USB to BLE HID Bridge
+# Pico W / Pico 2 W - USB to BLE HID Bridge
 
 ## 1. Overview
 
