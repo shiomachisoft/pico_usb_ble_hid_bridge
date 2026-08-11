@@ -3,7 +3,7 @@
 ## 1. Overview
 
 This firmware allows the Raspberry Pi Pico W / Pico 2 W to operate as a "USB to BLE HID Bridge".  
-*(Note: In this document, both boards are collectively referred to as "**Pico W**".)* 
+*(Note: In this document, both boards are collectively referred to as "**Pico W**".)*  
 By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, or other devices.
 
 ## 2. System Configuration
