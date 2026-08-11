@@ -1,9 +1,10 @@
-# Pico - USB to BLE HID Bridge
+# Pico W - USB to BLE HID Bridge
 
 ## 1. Overview
 
-This firmware allows the Raspberry Pi Pico W / Pico 2 W to operate as a "USB to BLE HID Bridge".
-By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico 2 W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, or other devices.
+This firmware allows the Raspberry Pi Pico W / Pico 2 W to operate as a "USB to BLE HID Bridge".  
+*(Note: In this document, both boards are collectively referred to as "**Pico W**".)* 
+By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, or other devices.
 
 ## 2. System Configuration
 
@@ -13,16 +14,16 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
 
 
 - **Special Notes**
-  - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
+  - **The standard USB connector on the Pico W is used exclusively for power supply (it is not used for USB communication).**
   - **USB communication with the USB device is performed through a software-implemented USB port by controlling GP0 and GP1 using PIO (Programmable I/O).**
 
-### 2.2. Connection between Pico 2 W and USB Connector Board (Type-A Female)
+### 2.2. Connection between Pico W and USB Connector Board (Type-A Female)
 
 Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](https://akizukidenshi.com/catalog/g/g107429/) for the USB connector board (Type-A Female).
 
 <img width="1024" height="477" alt="image" src="https://github.com/user-attachments/assets/37b2661b-cd10-452d-9856-b4e2c9bc50d1" />
 
-| Pico 2 W Pin Name | Pin Number (Physical Pin) | USB Connector Board Pin |
+| Pico W Pin Name | Pin Number (Physical Pin) | USB Connector Board Pin |
 | :--- | :--- | :--- |
 | **GP0** | 1 | **D+** |
 | **GP1** | 2 | **D-** |
@@ -39,7 +40,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 - Please set your gamepad to "DirectInput" mode. "XInput" mode is not supported.
 - For composite USB devices (e.g., a single USB device that functions as both a keyboard and a mouse), only some functions may work.
 - Hot-plugging of USB devices (connecting or disconnecting while powered on) is not supported.
-- Do not connect a USB hub between the Pico 2 W and the USB device.
+- Do not connect a USB hub between the Pico W and the USB device.
 
 ## 4. Source Code and Binaries
 
@@ -51,19 +52,19 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 ## 5. Usage
 
 ### 5.1. Flashing the Firmware
-1. Connect the Pico 2 W to your PC via USB while holding down the BOOTSEL button (the white button) so it is recognized as a mass storage drive (RPI-RP2 or RP2350).
+1. Connect the Pico W to your PC via USB while holding down the BOOTSEL button (the white button) so it is recognized as a mass storage drive (RPI-RP2 or RP2350).
 2. Drag and drop the firmware (`pico_usb_ble_hid_bridge.uf2`) into the drive.
 
 ### 5.2. Pairing
 
 1. Connect each device as shown in the System Configuration diagram.
-2. With the Pico 2 W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
+2. With the Pico W powered OFF, connect a USB device (keyboard, mouse, gamepad, etc.) to the USB connector (Type-A Female).
    
    > **Note:**  
    > If using a gamepad, please set it to "DirectInput" mode beforehand.
      
-3. Supply power to the Pico 2 W's USB connector to turn it ON.
-   - *In the standby state before a BLE connection is established, the onboard LED on the Pico 2 W will **blink**.*
+3. Supply power to the Pico W's USB connector to turn it ON.
+   - *In the standby state before a BLE connection is established, the onboard LED on the Pico W will **blink**.*
 4. Open the Bluetooth settings screen on your BLE host (PC, tablet, smartphone), search for "USB BLE HID Brg", and pair it.
    
    > **Note:**  
@@ -79,7 +80,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
    > **Steps to Change the Connected USB Device:**  
    > If you want to change the connected USB device, please follow these steps:
-   > 1. Turn OFF the Pico 2 W.
+   > 1. Turn OFF the Pico W.
    > 2. Remove "USB BLE HID Brg" from the pairing information on your BLE host (PC, tablet, smartphone).
    > 3. Connect the new USB device to the USB connector (Type-A Female).
    > 4. Perform the steps in "5.2. Pairing" again.
