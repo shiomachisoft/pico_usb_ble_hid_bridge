@@ -1,3 +1,7 @@
+- 20260811
+Added support for Pico W.
+Changed the system clock to 240MHz, otherwise it wouldn't work on the Pico W.
+
 - 20260624_2
 Fixed an issue where it sometimes failed to pair with an iPad.
 

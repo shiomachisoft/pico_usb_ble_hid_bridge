@@ -20,8 +20,10 @@ Raspberry Pi Pico extension: 0.20.0
 
 5. Click "Import".
 
-6. Select "Release" or "Debug" as needed for "Switch Build Type".
+6. Select "pico_w" or "pico2_w" as needed for "Switch Board".
 
-7. Click "Compile Project" to start the build.
+7. Select "Release" or "Debug" as needed for "Switch Build Type".
+
+8. Click "Compile Project" to start the build.
 
 [Note] The build will fail if the project path contains Japanese (full-width) characters.

@@ -29,6 +29,7 @@
 #include "bsp/board_api.h"
 #include "btstack_run_loop.h"
 #include "hardware/clocks.h"
+#include "hardware/dma.h"
 #include "hardware/pio.h"
 #include "pico/cyw43_arch.h"
 #include "pico/flash.h"
@@ -38,8 +39,8 @@
 #include "pio_usb.h"
 #include "tusb.h"
 
-// System clock frequency required for Pico-PIO-USB stability (120MHz)
-#define SYS_CLOCK_KHZ 120000
+// System clock frequency required for Pico-PIO-USB stability (240MHz)
+#define SYS_CLOCK_KHZ 240000
 
 // LED blinking interval when Bluetooth is not connected (ms)
 #define LED_BLINK_INTERVAL_MS 500
@@ -70,7 +71,7 @@ static void led_timer_handler(btstack_timer_source_t *ts);
  * @return int Returns 0 on completion (never reached in normal operation).
  */
 int main(void) {
-    // Set system clock to 120MHz for stable Pico-PIO-USB communication
+    // Set system clock to 240MHz for stable Pico-PIO-USB communication
     set_sys_clock_khz(SYS_CLOCK_KHZ, true);
 
     // Initialize standard board hardware (e.g., standard I/O for printf)
@@ -95,26 +96,38 @@ int main(void) {
     // Wait on Core 0 until Core 1 has finished initializing Bluetooth
     sem_acquire_blocking(&bt_init_sem);
 
+    // Re-assert system clock after CYW43 initialization.
+    // On RP2040/RP2350 (Pico W / Pico 2 W), cyw43_arch_init() can modify clock dividers or PLL settings.
+    // Pico-PIO-USB requires exact clock timing for stable USB communication.
+    set_sys_clock_khz(SYS_CLOCK_KHZ, true);
+
     // Configure Pico-PIO-USB pins
     // Use default PIO USB pins (D+ = GPIO0, D- = GPIO1) since UART is remapped to
     // GPIO4/5 in CMake
     pio_usb_configuration_t pio_cfg =
         PIO_USB_DEFAULT_CONFIG; // Configuration options for Pico-PIO-USB hardware
 
-    // Dynamically determine which PIO instance (0 or 1) has free state machines
-    // using pio_claim_unused_sm. Since we do not need to consider PIO exhaustion,
-    // we assume at least one instance has a free state machine.
-    PIO pio = pio0;
-    int sm = pio_claim_unused_sm(pio0, false);
+    // Prefer PIO1 for Pico-PIO-USB on Pico W / Pico 2 W.
+    // CYW43 architecture uses PIO0 for Wi-Fi/BT communication.
+    // Selecting PIO1 prevents instruction memory overflow and PIO state machine conflicts.
+    PIO pio = pio1;
+    int sm = pio_claim_unused_sm(pio1, false);
     if (sm < 0) {
-        pio = pio1;
-        sm = pio_claim_unused_sm(pio1, true);
+        pio = pio0;
+        sm = pio_claim_unused_sm(pio0, true);
     }
     pio_sm_unclaim(pio, sm);
 
-    uint8_t pio_num = (pio == pio0) ? 0 : 1;
+    uint8_t pio_num = (pio == pio1) ? 1 : 0;
     pio_cfg.pio_tx_num = pio_num;
     pio_cfg.pio_rx_num = pio_num;
+
+    // Dynamically query an unused DMA channel for Pico-PIO-USB.
+    int dma_ch = dma_claim_unused_channel(true);
+    if (dma_ch >= 0) {
+        dma_channel_unclaim(dma_ch);
+        pio_cfg.tx_ch = (uint8_t)dma_ch;
+    }
 
     // Apply the PIO USB configuration to TinyUSB
     tuh_configure(BOARD_TUH_RHPORT, TUH_CFGID_RPI_PIO_USB_CONFIGURATION,

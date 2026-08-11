@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-This firmware allows the Raspberry Pi Pico 2 W to operate as a "USB to BLE HID Bridge".
+This firmware allows the Raspberry Pi Pico W / Pico 2 W to operate as a "USB to BLE HID Bridge".
 By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pico 2 W, you can use it as a BLE (Bluetooth Low Energy) device from a PC, tablet, smartphone, or other devices.
 
 ## 2. System Configuration
@@ -50,7 +50,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 ## 5. Usage
 
 ### 5.1. Flashing the Firmware
-1. Connect the Pico 2 W to your PC via USB while holding down the BOOTSEL button (the white button) so it is recognized as an RP2350 drive.
+1. Connect the Pico 2 W to your PC via USB while holding down the BOOTSEL button (the white button) so it is recognized as a mass storage drive (RPI-RP2 or RP2350).
 2. Drag and drop the firmware (`pico_usb_ble_hid_bridge.uf2`) into the drive.
 
 ### 5.2. Pairing
@@ -88,7 +88,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 ### 6.1. Verified USB Devices
 - Mouse: ELECOM M-HC01UR
 - Keyboard: ELECOM TK-FDM109T
-- Gamepad: ELECOM GP20s
+- Gamepad: ELECOM GP20S
 
 ### 6.2. Verified BLE Hosts
 - Windows 11 PC
