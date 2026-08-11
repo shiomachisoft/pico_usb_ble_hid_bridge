@@ -9,7 +9,8 @@ By simply connecting a USB HID device (keyboard, mouse, gamepad, etc.) to the Pi
 
 ### 2.1. Configuration Overview
 
-<img width="819" height="456" alt="image" src="https://github.com/user-attachments/assets/aac5bf01-4c37-42ab-b7ae-c93f7b719c7e" />
+<img width="826" height="460" alt="image" src="https://github.com/user-attachments/assets/75a193ce-8b80-4136-af41-81312bbb84f9" />
+
 
 - **Special Notes**
   - **The standard USB connector on the Pico 2 W is used exclusively for power supply (it is not used for USB communication).**
