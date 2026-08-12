@@ -4,11 +4,11 @@ The licensing of pico_usb_ble_hid_bridge is subject to these licenses.
 //////////////////////////////////////////////////////////////////////////////
 // BlueKitchen's btstack supplemental license for Raspberry Pi Pico
 //////////////////////////////////////////////////////////////////////////////
-gBlueKitchenh shall refer to BlueKitchen GmbH.
-gRaspberry Pih shall refer to Raspberry Pi Ltd.
-gProducth shall refer to Raspberry Pi hardware products Pico W, Pico WH, Pico 2 W, Pico 2 WH, and RM2.
-gCustomerh means any purchaser of a Product.
-gCustomer Productsh means products manufactured or distributed by Customers which use or are derived from Products.
+â€œBlueKitchenâ€ shall refer to BlueKitchen GmbH.
+â€œRaspberry Piâ€ shall refer to Raspberry Pi Ltd.
+â€œProductâ€ shall refer to Raspberry Pi hardware products Pico W, Pico WH, Pico 2 W, Pico 2 WH, and RM2.
+â€œCustomerâ€ means any purchaser of a Product.
+â€œCustomer Productsâ€ means products manufactured or distributed by Customers which use or are derived from Products.
 
 Raspberry Pi grants to the Customer a non-exclusive, non-transferable, non-sublicensable, irrevocable, perpetual
 and worldwide licence to use, copy, store, develop, modify, and transmit BTstack in order to use BTstack with or
@@ -20,7 +20,7 @@ warrants that all such use shall be in compliance with the terms of this licence
 regulations, including but not limited to, copyright and other intellectual property laws and privacy regulations.
 
 BlueKitchen retains all rights, title and interest in, to and associated with BTstack and associated websites.
-Customer shall not take any action inconsistent with BlueKitchenfs ownership of BTstack, any associated services,
+Customer shall not take any action inconsistent with BlueKitchenâ€™s ownership of BTstack, any associated services,
 websites and related content.
 
 There are no implied licences under the terms set forth in this licence, and any rights not expressly granted
