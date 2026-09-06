@@ -4,7 +4,6 @@
 #include <stdarg.h>
 #include <stdio.h>
 
-
 // Set to 1 to enable debug printing, or 0 to disable it
 #define ENABLE_DBG_PRINT 0
 

@@ -56,27 +56,26 @@ target_compile_options(pico_usb_ble_hid_bridge PRIVATE
 
 # Make sure TinyUSB can find tusb_config.h
 target_include_directories(pico_usb_ble_hid_bridge PRIVATE
-			${CMAKE_CURRENT_SOURCE_DIR}
-			${CMAKE_CURRENT_SOURCE_DIR}/Pico-PIO-USB/src)
+        ${CMAKE_CURRENT_SOURCE_DIR}
+        ${CMAKE_CURRENT_SOURCE_DIR}/Pico-PIO-USB/src)
 
-target_compile_definitions(pico_usb_ble_hid_bridge PRIVATE 
+target_compile_definitions(pico_usb_ble_hid_bridge PRIVATE
         CYW43_LWIP=0
         PICO_DEFAULT_UART=1
         PICO_DEFAULT_UART_TX_PIN=4
         PICO_DEFAULT_UART_RX_PIN=5
-        MAX_ATT_DB_SIZE=8192
         )
 
 # In addition to pico_stdlib required for common PicoSDK functionality, add dependency on tinyusb_host
 # for TinyUSB device support and tinyusb_board for the additional board support library used by the example
 target_link_libraries(pico_usb_ble_hid_bridge PRIVATE
-        pico_stdlib 
-        tinyusb_host 
+        pico_stdlib
+        tinyusb_host
         tinyusb_board
         pico_btstack_ble
         pico_btstack_cyw43
         pico_btstack_flash_bank
-        pico_cyw43_arch_threadsafe_background	
+        pico_cyw43_arch_threadsafe_background
         pico_multicore
         pico_flash
         hardware_pio

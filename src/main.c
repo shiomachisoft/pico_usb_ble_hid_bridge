@@ -39,6 +39,12 @@
 #include "pio_usb.h"
 #include "tusb.h"
 
+#include "ble_hid_periph.h"
+#include "usb_hid_host.h"
+
+//--------------------------------------------------------------------+
+// Macro Definitions
+//--------------------------------------------------------------------+
 // System clock frequency required for Pico-PIO-USB stability (240MHz)
 #define SYS_CLOCK_KHZ 240000
 
@@ -48,16 +54,19 @@
 // LED check interval when Bluetooth is connected (ms)
 #define LED_CONNECTED_CHECK_INTERVAL_MS 100
 
+//--------------------------------------------------------------------+
+// Global & Static Variables
+//--------------------------------------------------------------------+
+
 // Semaphore used for secure cross-core synchronization.
 static semaphore_t bt_init_sem;
 
 // Timer for LED blinking on Core 1
 static btstack_timer_source_t led_timer;
 
-// External functions provided by the BLE peripheral stack
-extern bool ble_hid_is_connected(void);
-extern void ble_hid_periph_init_flash(void);
-
+//--------------------------------------------------------------------+
+// Function Prototypes
+//--------------------------------------------------------------------+
 // Static function prototypes
 static void core1_entry(void);
 static void led_timer_handler(btstack_timer_source_t *ts);
@@ -133,6 +142,11 @@ int main(void) {
     tuh_configure(BOARD_TUH_RHPORT, TUH_CFGID_RPI_PIO_USB_CONFIGURATION,
                   &pio_cfg);
 
+    // Set default protocol to Report Protocol (1) instead of Boot Protocol (0).
+    // This instructs TinyUSB to automatically negotiate Report Protocol during enumeration,
+    // ensuring devices send their full Report Descriptor packets with Report IDs instead of BIOS boot reports.
+    tuh_hid_set_default_protocol(HID_PROTOCOL_REPORT);
+
     // Initialize the TinyUSB host stack on the configured root hub port
     tuh_init(BOARD_TUH_RHPORT);
 
@@ -148,6 +162,8 @@ int main(void) {
     while (1) {
         // Service the TinyUSB host background task
         tuh_task();
+        // Service USB HID host multi-device aggregation task
+        usb_hid_host_task();
     }
 
     return 0;

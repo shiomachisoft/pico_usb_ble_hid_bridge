@@ -35,6 +35,7 @@
  *
  */
 
+#include "ble_hid_periph.h"
 #include "debug_print.h"
 #include <inttypes.h>
 #include <stdatomic.h>
@@ -43,7 +44,6 @@
 #include <string.h>
 
 #include "btstack_util.h"
-#include "hardware/irq.h"
 #include "pico/cyw43_arch.h"
 #include "pico/util/queue.h"
 
@@ -68,8 +68,8 @@
 // Maximum length of the dynamic HID report descriptor (in bytes)
 #define DYNAMIC_HID_DESC_MAX_LEN 2048
 
-// Maximum length of a raw HID report (in bytes)
-#define HID_REPORT_MAX_LEN 64
+// Maximum length of a raw HID report (1 byte Report ID + up to 64 bytes USB payload)
+#define HID_REPORT_MAX_LEN 65
 
 // Initial battery level percentage (0 to 100)
 #define INITIAL_BATTERY_LEVEL 100
@@ -114,6 +114,8 @@ static volatile hci_con_handle_t con_handle =
     HCI_CON_HANDLE_INVALID; // Active connection handle
 // Flag to indicate if the BLE connection is fully encrypted
 static volatile bool link_encrypted = false; // Security link status flag
+static bd_addr_t current_peer_addr;          // Bluetooth address of connected peer
+static uint8_t current_peer_addr_type = 0;   // Address format of connected peer
 
 static hid_report_info_t
     ble_reports[MAX_BLE_REPORTS];   // Array of parsed report definitions
@@ -134,56 +136,6 @@ static atomic_bool send_request_pending =
 static btstack_tlv_flash_bank_t
     btstack_tlv_flash_bank_context; // Storage context for pairing keys in Flash
 
-// Mask list of interrupts for Pico-PIO-USB and DMA to prevent XIP conflicts
-// during Flash writes
-static const uint8_t mask_irqs[] = {PIO0_IRQ_0, PIO0_IRQ_1,
-                                    PIO1_IRQ_0, PIO1_IRQ_1,
-#ifdef PIO2_IRQ_0
-                                    PIO2_IRQ_0, PIO2_IRQ_1,
-#endif
-                                    DMA_IRQ_0,  DMA_IRQ_1};
-#define NUM_MASK_IRQS (sizeof(mask_irqs) / sizeof(mask_irqs[0]))
-
-static uint32_t irq_mask_state = 0;
-
-static void mask_pio_dma_irqs(void) {
-    irq_mask_state = 0;
-    for (int i = 0; i < NUM_MASK_IRQS; i++) {
-        if (irq_is_enabled(mask_irqs[i])) {
-            irq_mask_state |= (1 << i);
-            irq_set_enabled(mask_irqs[i], false);
-        }
-    }
-}
-
-static void restore_pio_dma_irqs(void) {
-    for (int i = 0; i < NUM_MASK_IRQS; i++) {
-        if (irq_mask_state & (1 << i)) {
-            irq_set_enabled(mask_irqs[i], true);
-        }
-    }
-}
-
-static const hal_flash_bank_t *original_hal_flash_bank = NULL;
-static hal_flash_bank_t my_hal_flash_bank;
-
-static void my_flash_erase(void *context, int block_nr) {
-    if (!original_hal_flash_bank)
-        return;
-    mask_pio_dma_irqs();
-    original_hal_flash_bank->erase(context, block_nr);
-    restore_pio_dma_irqs();
-}
-
-static void my_flash_write(void *context, int block_nr, uint32_t offset,
-                           const uint8_t *data, uint32_t size) {
-    if (!original_hal_flash_bank)
-        return;
-    mask_pio_dma_irqs();
-    original_hal_flash_bank->write(context, block_nr, offset, data, size);
-    restore_pio_dma_irqs();
-}
-
 // BLE Advertisement data payload (announces device presence and capabilities)
 static const uint8_t adv_data[] = {
     // Flags general discoverable, BR/EDR not supported
@@ -191,12 +143,14 @@ static const uint8_t adv_data[] = {
     BLUETOOTH_DATA_TYPE_FLAGS,
     0x06,
     // Name
+    // NOTE: If this device name is changed, also update the name and length in the GAP Service
+    // (UUID 0x2A00 in build_dynamic_gatt). Also update the length prefix byte (0x10 = strlen + 1).
     0x10,
     BLUETOOTH_DATA_TYPE_COMPLETE_LOCAL_NAME,
     'U',
     'S',
     'B',
-    ' ',
+    '-',
     'B',
     'L',
     'E',
@@ -268,23 +222,15 @@ static void att_packet_handler(uint8_t packet_type, uint16_t channel,
  * Ensures the device remains bonded across reboots.
  */
 void ble_hid_periph_init_flash(void) {
-    // Setup non-volatile memory (Flash) for saving Bluetooth pairing/bonding keys
-    // Without this, the device will lose pairings on reboot and fail to reconnect
+    // Setup non-volatile memory (Flash) for saving Bluetooth pairing/bonding keys.
+    // Pico SDK's pico_flash_bank automatically uses flash_safe_execute() to safely
+    // coordinate multicore flash access with Core 0.
     const hal_flash_bank_t *hal_flash_bank =
         pico_flash_bank_instance(); // Pointer to flash memory bank configuration
 
-    // Wrap original hal_flash_bank to mask PIO-USB/DMA interrupts during
-    // erase/write operations
-    if (hal_flash_bank) {
-        original_hal_flash_bank = hal_flash_bank;
-        my_hal_flash_bank = *hal_flash_bank;      // Copy struct contents
-        my_hal_flash_bank.erase = my_flash_erase; // Override erase pointer
-        my_hal_flash_bank.write = my_flash_write; // Override write pointer
-    }
-
     const btstack_tlv_t *tlv_impl = btstack_tlv_flash_bank_init_instance(
         &btstack_tlv_flash_bank_context,
-        original_hal_flash_bank ? &my_hal_flash_bank : hal_flash_bank,
+        hal_flash_bank,
         NULL); // TLV API implementation pointer
     // Set the global TLV storage instance for BTstack
     btstack_tlv_set_instance(tlv_impl, &btstack_tlv_flash_bank_context);
@@ -388,7 +334,12 @@ void ble_hid_periph_send_raw_report(uint8_t const *report, uint16_t len) {
     if (!report || len == 0)
         return;
 
-    if (con_handle == HCI_CON_HANDLE_INVALID || !link_encrypted) {
+    if (con_handle == HCI_CON_HANDLE_INVALID) {
+        DbgPrint("BLE drop: connection handle invalid\n");
+        return;
+    }
+    if (!link_encrypted) {
+        DbgPrint("BLE drop: link not encrypted\n");
         return;
     }
 
@@ -479,15 +430,29 @@ static void build_dynamic_gatt(const uint8_t *desc, uint16_t desc_len) {
     att_db_util_init();
 
     // GAP Service
+    // NOTE: If this device name or length is changed, also update the name and length prefix byte in adv_data[].
     att_db_util_add_service_uuid16(0x1800);
     att_db_util_add_characteristic_uuid16(0x2A00, ATT_PROPERTY_READ,
                                           ATT_SECURITY_NONE, ATT_SECURITY_NONE,
-                                          (uint8_t *)"USB BLE HID Brg", 15);
+                                          (uint8_t *)"USB-BLE HID Brg", 15);
     static uint16_t appearance =
         BLE_APPEARANCE_HID_GENERIC; // HID Generic appearance value
     att_db_util_add_characteristic_uuid16(0x2A01, ATT_PROPERTY_READ,
                                           ATT_SECURITY_NONE, ATT_SECURITY_NONE,
                                           (uint8_t *)&appearance, 2);
+
+    // Peripheral Preferred Connection Parameters (PPCP - 0x2A04)
+    // Min interval: 10 (12.5ms), Max interval: 12 (15.0ms), Slave Latency: 0, Supervision Timeout: 400 (4000ms)
+    // Provides relaxed timing compatible across Windows/Android and Apple devices without rejection
+    static const uint8_t ppcp_param[] = {
+        0x0A, 0x00, // Min Connection Interval: 10 * 1.25ms = 12.5ms
+        0x0C, 0x00, // Max Connection Interval: 12 * 1.25ms = 15.0ms
+        0x00, 0x00, // Slave Latency: 0
+        0x90, 0x01  // Supervision Timeout: 400 * 10ms = 4000ms
+    };
+    att_db_util_add_characteristic_uuid16(0x2A04, ATT_PROPERTY_READ,
+                                          ATT_SECURITY_NONE, ATT_SECURITY_NONE,
+                                          (uint8_t *)ppcp_param, sizeof(ppcp_param));
 
     // GATT Service
     att_db_util_add_service_uuid16(0x1801);
@@ -584,6 +549,8 @@ static void build_dynamic_gatt(const uint8_t *desc, uint16_t desc_len) {
         att_db_util_add_descriptor_uuid16(0x2908, ATT_PROPERTY_READ,
                                           ATT_SECURITY_NONE, ATT_SECURITY_NONE,
                                           rep_refs[i], 2);
+        DbgPrint("  GATT Report Char %d: id=%d, type=%d, val_handle=0x%04x\n",
+                 i, ble_reports[i].id, ble_reports[i].type, ble_reports[i].value_handle);
     }
 }
 
@@ -595,7 +562,6 @@ static void build_dynamic_gatt(const uint8_t *desc, uint16_t desc_len) {
  * @param desc_len Length of the descriptor.
  */
 static void ble_hid_periph_setup(const uint8_t *desc, uint16_t desc_len) {
-
     // Initialize the L2CAP layer (Logical Link Control and Adaptation Protocol)
     l2cap_init();
 
@@ -644,14 +610,14 @@ static void ble_hid_periph_setup(const uint8_t *desc, uint16_t desc_len) {
 }
 
 /**
- * @brief Dequeues a pending report from queue and transmits it over BLE notify.
- * Triggers another notification request if there is more data waiting.
+ * @brief Dequeues pending reports from queue and transmits them over BLE notify.
+ * Uses queue_try_peek to avoid dropping reports if the HCI buffer becomes full,
+ * and bursts multiple reports within the same connection interval.
  */
 static void typing_can_send_now(void) {
-    hid_report_t item; // Buffer to hold popped queue report
-    // Dequeue a report and send it over BLE
-    if (queue_try_remove(&report_queue, &item)) {
-
+    hid_report_t item;
+    // Peek and transmit reports as long as controller buffer accepts them
+    while (queue_try_peek(&report_queue, &item)) {
         uint8_t id = use_report_ids ? item.report[0]
                                     : 0; // Mapped Report ID from report data
         uint16_t val_handle = 0;         // Target HIDS characteristic value handle
@@ -662,8 +628,8 @@ static void typing_can_send_now(void) {
             }
         }
 
+        uint8_t status = ERROR_CODE_SUCCESS;
         if (val_handle != 0) {
-            uint8_t status; // Notification return status
             if (use_report_ids && item.len >= 1) {
                 status = att_server_notify(con_handle, val_handle, item.report + 1,
                                            item.len - 1);
@@ -671,29 +637,27 @@ static void typing_can_send_now(void) {
                 status =
                     att_server_notify(con_handle, val_handle, item.report, item.len);
             }
-            (void)status; // Suppress unused variable warning
         } else {
-            // Fallback: If Report ID wasn't found (e.g., due to parser limits or spec
-            // violation), send the raw data to the first available Input report
-            // characteristic.
-            for (int i = 0; i < num_ble_reports; i++) {
-                if (ble_reports[i].type == 1) { // 1 = Input
-                    if (use_report_ids && item.len >= 1) {
-                        att_server_notify(con_handle, ble_reports[i].value_handle,
-                                          item.report + 1, item.len - 1);
-                    } else {
-                        att_server_notify(con_handle, ble_reports[i].value_handle,
-                                          item.report, item.len);
-                    }
-                    break;
-                }
-            }
+            // Unknown Report ID: do not forward to an arbitrary input characteristic
+            // (prevents invalid keystrokes or mouse clicks). Safely drop from queue.
+            DbgPrint("BLE drop unmapped report: id=%d len=%d\n", id, item.len);
+            hid_report_t dummy;
+            queue_try_remove(&report_queue, &dummy);
+            continue;
         }
 
-        // If there are more reports waiting in the queue, request another send
-        // event
-        if (!queue_is_empty(&report_queue)) {
+        DbgPrint("BLE send: id=%d handle=0x%04x len=%d status=0x%02x\n",
+                 id, val_handle, item.len, status);
+
+        if (status == ERROR_CODE_SUCCESS) {
+            // Successfully queued in controller; safely remove from queue
+            hid_report_t dummy;
+            queue_try_remove(&report_queue, &dummy);
+        } else {
+            // Controller buffer is full; item remains in queue, request CAN_SEND_NOW for next slot
+            DbgPrint("BLE send failed (status 0x%02x), retrying...\n", status);
             att_server_request_can_send_now_event(con_handle);
+            return;
         }
     }
 }
@@ -785,10 +749,19 @@ static void hci_packet_handler(uint8_t packet_type, uint16_t channel,
         if (packet[2] == ERROR_CODE_SUCCESS && packet[5] != 0) {
             DbgPrint("Connection encrypted\n");
             link_encrypted = true;
+
+            // Request relaxed connection interval (min 12.5ms, max 15.0ms, latency 0, timeout 4s)
+            // Compatible with Windows/Android and iOS/macOS
+            uint8_t req_status = gap_request_connection_parameter_update(con_handle, 10, 12, 0, 400);
+            DbgPrint("Requested connection parameter update (min=12.5ms, max=15.0ms, status=0x%02x)\n", req_status);
         } else {
             DbgPrint(
                 "Encryption failed! (Link key might be missing, status: 0x%02x)\n",
                 packet[2]);
+            gap_delete_bonding(current_peer_addr_type, current_peer_addr);
+            DbgPrint("Deleted stale bonding for %s (type %d) to allow clean re-pairing\n",
+                     bd_addr_to_str(current_peer_addr), current_peer_addr_type);
+            gap_disconnect(con_handle);
         }
         break;
 
@@ -817,11 +790,10 @@ static void hci_packet_handler(uint8_t packet_type, uint16_t channel,
             // Store the connection handle for future communication (offset 4)
             con_handle = packet[4] | (packet[5] << 8);
             link_encrypted = false;
-            bd_addr_t peer_addr; // Bluetooth address of target central peer
-            reverse_bd_addr(&packet[8], peer_addr);
-            uint8_t peer_addr_type = packet[7]; // Address format (random/public)
-            DbgPrint("Connected to %s (type %d)\n", bd_addr_to_str(peer_addr),
-                     peer_addr_type);
+            reverse_bd_addr(&packet[8], current_peer_addr);
+            current_peer_addr_type = packet[7]; // Address format (random/public)
+            DbgPrint("Connected to %s (type %d)\n", bd_addr_to_str(current_peer_addr),
+                     current_peer_addr_type);
 
             // Actively request encryption (or pairing) start from Windows
             sm_request_pairing(con_handle);
@@ -846,12 +818,10 @@ static void hci_packet_handler(uint8_t packet_type, uint16_t channel,
             // Store the connection handle for future communication (offset 4)
             con_handle = packet[4] | (packet[5] << 8);
             link_encrypted = false;
-            bd_addr_t peer_addr_enh; // Bluetooth address of target central peer
-                                     // (enhanced details)
-            reverse_bd_addr(&packet[8], peer_addr_enh);
-            uint8_t peer_addr_type_enh = packet[7]; // Address format (enhanced)
+            reverse_bd_addr(&packet[8], current_peer_addr);
+            current_peer_addr_type = packet[7]; // Address format (enhanced)
             DbgPrint("Connected [Enhanced] to %s (type %d)\n",
-                     bd_addr_to_str(peer_addr_enh), peer_addr_type_enh);
+                     bd_addr_to_str(current_peer_addr), current_peer_addr_type);
 
             // Actively request encryption (or pairing) start from Windows
             sm_request_pairing(con_handle);

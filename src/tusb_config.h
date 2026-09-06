@@ -101,7 +101,7 @@
 // Size of buffer to hold descriptors and other data used for enumeration
 #define CFG_TUH_ENUMERATION_BUFSIZE 1024
 
-#define CFG_TUH_HUB                 0 // Hubs are NOT supported by Pico-PIO-USB. Disable to save RAM and prevent crashes.
+#define CFG_TUH_HUB                 1 // Enable USB Hub support
 #define CFG_TUH_CDC                 0 // CDC ACM
 #define CFG_TUH_CDC_FTDI            0 // FTDI Serial.  FTDI is not part of CDC class, only to re-use CDC driver API
 #define CFG_TUH_CDC_CP210X          0 // CP210x Serial. CP210X is not part of CDC class, only to re-use CDC driver API
@@ -110,8 +110,7 @@
 #define CFG_TUH_MSC                 0
 #define CFG_TUH_VENDOR              0
 
-// max device support (excluding hub device): 1 hub typically has 4 ports
-#define CFG_TUH_DEVICE_MAX          (3*CFG_TUH_HUB + 1)
+#define CFG_TUH_DEVICE_MAX          4
 
 //------------- HID -------------//
 // Endpoint buffer sizes for HID reports (64 bytes is the standard max for Full Speed USB HID)
