@@ -63,7 +63,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 ### Flashing the Firmware
 
 > **Note on Firmware Updates:**  
-> When updating (reflashing) the firmware, it is recommended to remove/unpair **"USB-BLE HID Brg"** from the Bluetooth settings on your BLE host (PC, tablet, smartphone) beforehand as a precaution to prevent connection issues or stale GATT/bonding cache conflicts.
+> When updating (reflashing) the firmware, it is recommended to remove **"USB-BLE HID Brg"** from the Bluetooth settings on your BLE host (PC, tablet, smartphone) beforehand as a precaution to prevent connection issues or stale GATT/bonding cache conflicts.
 
 1. Connect the Pico W to your PC via USB while holding down the BOOTSEL button (the white button) so it is recognized as a mass storage drive (RPI-RP2 or RP2350).
 2. Drag and drop the firmware (`pico_usb_ble_hid_bridge.uf2`) into the drive.
