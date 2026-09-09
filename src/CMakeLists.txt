@@ -80,6 +80,7 @@ target_link_libraries(pico_usb_ble_hid_bridge PRIVATE
         pico_flash
         hardware_pio
         hardware_dma
+        hardware_vreg
         )
 
 pico_add_extra_outputs(pico_usb_ble_hid_bridge)

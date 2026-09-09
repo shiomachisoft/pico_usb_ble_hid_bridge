@@ -11,7 +11,7 @@ This document describes how to build the firmware for Raspberry Pi Pico W / Pico
 > [!NOTE]
 > Tested and confirmed to work with the following versions:
 > - VS Code: `v1.136.1`
-> - Raspberry Pi Pico extension: `v0.22.0`
+> - Raspberry Pi Pico extension: `v0.23.0`
 > - Pico SDK: `v2.2.0`
 
 ## Build Steps

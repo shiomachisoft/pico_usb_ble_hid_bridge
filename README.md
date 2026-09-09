@@ -121,6 +121,10 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 > - The gamepad has currently only been tested on Windows 11 PC.
 > - Not all combinations of listed USB devices and BLE hosts are re-tested with every firmware release.
 
+## Known Issues
+
+Please refer to the [GitHub Issues (labeled "bug")](https://github.com/shiomachisoft/pico_usb_ble_hid_bridge/issues?q=is%3Aissue+label%3Abug).
+
 ## License
 
 For details regarding the license of this software, please refer to the `LICENSE` file in the repository.

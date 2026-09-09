@@ -31,6 +31,7 @@
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
 #include "hardware/pio.h"
+#include "hardware/vreg.h"
 #include "pico/cyw43_arch.h"
 #include "pico/flash.h"
 #include "pico/multicore.h"
@@ -80,6 +81,13 @@ static void led_timer_handler(btstack_timer_source_t *ts);
  * @return int Returns 0 on completion (never reached in normal operation).
  */
 int main(void) {
+#if PICO_RP2040
+    // Pico W (RP2040): Elevate core voltage to 1.15V for stability at 240MHz overclock.
+    // Pico 2 W (RP2350) operates stably at 240MHz on stock voltage (1.10V) without elevation.
+    vreg_set_voltage(VREG_VOLTAGE_1_15);
+    busy_wait_ms(10);
+#endif
+
     // Set system clock to 240MHz for stable Pico-PIO-USB communication
     set_sys_clock_khz(SYS_CLOCK_KHZ, true);
 
