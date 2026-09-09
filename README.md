@@ -20,7 +20,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 
 <img width="1024" height="477" alt="image" src="https://github.com/user-attachments/assets/d6162ca1-4a36-4a6a-9232-454f3f1f9e93" />
 
-**Connect 27 ohm resistors between GP0/GP1 of the Pico W and D+/D- of the USB connector, respectively.**
+**Note:** Connect 27 ohm resistors between GP0/GP1 of the Pico W and D+/D- of the USB connector, respectively.
 
 | Pico W Pin Name | Pin Number (Physical Pin) | USB Connector Board Pin |
 | :--- | :--- | :--- |
