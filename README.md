@@ -53,7 +53,7 @@ Below is a connection example when using the [Akizuki Denshi: AE-USB-A-DIP](http
 The full source code for this program and the ready-to-flash binary (.uf2 file) are available in this repository:
 
 - **Pre-built binaries**: Available under [`bin/`](bin/)
-- **Build from source**: See [docs/build.md](docs/build.md) for detailed build instructions using VS Code.
+- **Build from source**: See [docs/build.md](docs/build.md) for build instructions using VS Code.
 
 > **Note:**  
 > The source code is written in C using the Pico SDK.
