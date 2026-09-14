@@ -123,7 +123,7 @@ The full source code for this program and the ready-to-flash binary (.uf2 file) 
 
 ## Known Issues
 
-Please refer to the [GitHub Issues (labeled "bug")](https://github.com/shiomachisoft/pico_usb_ble_hid_bridge/issues?q=is%3Aissue+label%3Abug).
+Please refer to the [GitHub Issues (open, labeled "bug")](https://github.com/shiomachisoft/pico_usb_ble_hid_bridge/issues?q=is%3Aissue+is%3Aopen+label%3Abug).
 
 ## License
 
