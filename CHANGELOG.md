@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2026-09-14]
+
+### Changed
+- Increased RP2040 (Pico W) core voltage from 1.15V (`VREG_VOLTAGE_1_15`) to 1.20V (`VREG_VOLTAGE_1_20`) via `vreg_set_voltage` for improved stability at 240MHz overclock.
+
 ## [2026-09-09]
 
 ### Changed
